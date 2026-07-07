@@ -48,7 +48,6 @@
   </div>
   <app-loading-spinner [active]="isLoadingMore()" />
 }
-<div>{{ svc.hasMore() }}</div>
 @if (svc.hasMore()) {
   <app-loading-spinner [active]="isLoadingMore()" />
   <div #sentinel style="height: 1px"></div>
