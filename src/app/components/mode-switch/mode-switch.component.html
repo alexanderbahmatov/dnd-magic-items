@@ -1,0 +1,11 @@
+<div class="switch">
+  <button class="switch-btn" [class.active]="!buy.active()" (click)="buy.active.set(false)">
+    Каталог
+  </button>
+  <button class="switch-btn" [class.active]="buy.active()" (click)="buy.active.set(true)">
+    Режим закупа
+    @if (buy.active() && buy.cartCount() > 0) {
+      <span class="cart-pill">{{ buy.cartCount() }}</span>
+    }
+  </button>
+</div>

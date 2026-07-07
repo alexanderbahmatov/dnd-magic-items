@@ -1,0 +1,60 @@
+<div
+  class="card"
+  [class.dimmed]="buy.active() && !isAffordable"
+  (click)="open.emit(item)"
+>
+  <div class="card-header">
+    <div>
+      <div class="card-name-rus">{{ item.name }}</div>
+      <div class="card-name-eng">{{ item.nameEn }}</div>
+    </div>
+    <span class="badge" [ngClass]="rarityClass">{{ item.rarity?.name }}</span>
+  </div>
+
+  <div class="card-meta">
+    @if (item.itemType?.name) {
+      <span class="tag">{{ item.itemType?.name }}</span>
+    }
+    @if (item.source?.shortName) {
+      <span class="tag">{{ item.source?.shortName }}</span>
+    }
+    @if (item.attunement) {
+      <span class="tag attune" title="настройка"
+        ><i class="fa-solid fa-sun"></i
+      ></span>
+    }
+    @if (item.cursed) {
+      <span class="tag cursed" title="проклят"
+        ><i class="fa-solid fa-skull"></i
+      ></span>
+    }
+  </div>
+
+  <!-- <p class="card-desc">{{ description }}</p> -->
+
+  <div class="card-footer">
+    @if (!buy.active()) {
+      <span class="card-source">{{ item.source?.name }}</span>
+      @if (priceDisplay) {
+        <span class="card-price">{{ priceDisplay }}</span>
+      } @else {
+        <span class="card-price muted">цена неизвестна</span>
+      }
+    } @else {
+      <span
+        class="buy-price"
+        [class.afford]="isAffordable"
+        [class.no-afford]="!isAffordable"
+      >
+        {{ buyPriceLabel }}
+      </span>
+      <button
+        class="btn-add"
+        [disabled]="!isAffordable"
+        (click)="addToCart($event)"
+      >
+        + В закуп
+      </button>
+    }
+  </div>
+</div>

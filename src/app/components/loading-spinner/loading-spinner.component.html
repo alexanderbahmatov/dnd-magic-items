@@ -1,0 +1,7 @@
+@if (active) {
+  <div class="fly-overlay">
+    @for (icon of icons; track icon; let i = $index) {
+      <span class="fly-icon" [style.--i]="i">{{ icon }}</span>
+    }
+  </div>
+}

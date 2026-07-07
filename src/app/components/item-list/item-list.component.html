@@ -1,0 +1,55 @@
+<div class="search-row">
+  <input
+    type="text"
+    placeholder="Поиск по названию..."
+    [ngModel]="svc.filters().name"
+    (ngModelChange)="onSearchInput($event)"
+  />
+</div>
+
+<div class="results-bar">
+  <span class="results-count">
+    Показано: {{ displayedItems().length }} из {{ svc.totalCount() }}
+    @if (buy.active() && hiddenByBudgetCount() > 0) {
+      <span class="hidden-note"
+        >· {{ hiddenByBudgetCount() }} скрыто по бюджету</span
+      >
+    }
+  </span>
+  <select
+    [ngModel]="svc.filters().orderOptionIndex"
+    (ngModelChange)="onSortChange($event)"
+  >
+    @for (item of sortOptions; track $index) {
+      <option [ngValue]="$index">
+        {{ item.label }}
+      </option>
+    }
+  </select>
+</div>
+
+@if (displayedItems().length === 0) {
+  <div class="empty">
+    @if (buy.active()) {
+      Ничего не подходит по текущему бюджету
+    } @else {
+      Ничего не найдено
+    }
+  </div>
+} @else {
+  <div class="cards-grid">
+    @for (item of displayedItems(); track item; let i = $index) {
+      <app-item-card
+        [item]="item"
+        [style.--delay.ms]="i * 30"
+        (open)="open.emit($event)"
+      />
+    }
+  </div>
+  <app-loading-spinner [active]="isLoadingMore()" />
+}
+<div>{{ svc.hasMore() }}</div>
+@if (svc.hasMore()) {
+  <app-loading-spinner [active]="isLoadingMore()" />
+  <div #sentinel style="height: 1px"></div>
+}

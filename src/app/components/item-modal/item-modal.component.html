@@ -1,0 +1,68 @@
+<div class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="modal">
+    <button class="modal-close" (click)="close.emit()" aria-label="Закрыть">
+      ×
+    </button>
+
+    <span class="badge" [ngClass]="rarityClass">{{ item.rarity?.name }}</span>
+
+    <h2>{{ item.name }}</h2>
+    <div class="modal-eng">{{ item.nameEn }}</div>
+
+    <div class="modal-props">
+      <div class="prop">
+        <span class="prop-label">Тип</span
+        ><span class="prop-val">{{ item.itemType?.name }}</span>
+      </div>
+      <div class="prop">
+        <span class="prop-label">Источник</span
+        ><span class="prop-val">{{ item.source?.shortName }}</span>
+      </div>
+      @if (item.attunement) {
+        <div class="prop">
+          <span class="prop-label">Настройка</span
+          ><span class="prop-val">Требуется</span>
+        </div>
+      }
+      @if (item.costDMG) {
+        <div class="prop">
+          <span class="prop-label">Цена DMG</span
+          ><span class="prop-val">{{ item.costDMG }} зм.</span>
+        </div>
+      }
+      @if (item.costXGEFormula) {
+        <div class="prop">
+          <span class="prop-label">Цена XGE</span
+          ><span class="prop-val">{{ item.costXGEFormula }} зм.</span>
+        </div>
+      }
+    </div>
+
+    @if (item.attunementDetail?.length) {
+      <div class="custom-detail">
+        Может настраиваться: {{ item.attunementDetail }}
+      </div>
+    }
+
+    <div class="modal-desc" [innerHTML]="item.description"></div>
+
+    @if (buy.active()) {
+      <div class="modal-buy-bar">
+        <span
+          class="buy-price"
+          [class.afford]="isAffordable"
+          [class.no-afford]="!isAffordable"
+        >
+          {{ buy.priceLabel(item) }}
+        </span>
+        <button
+          class="btn-add"
+          [disabled]="!isAffordable"
+          (click)="addToCart()"
+        >
+          + Добавить в закуп
+        </button>
+      </div>
+    }
+  </div>
+</div>

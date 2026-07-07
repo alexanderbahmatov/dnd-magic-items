@@ -1,0 +1,112 @@
+<div class="modal-overlay" (click)="onOverlayClick($event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Фильтр</h2>
+      <button class="close-btn" (click)="closeModal.emit()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <section class="group">
+        <h3 class="group-title">Редкость</h3>
+        <div class="chips">
+          @for (r of svc.allRarities(); track r.id) {
+            <button
+              class="chip"
+              [class.active]="isRarityActive(r.id)"
+              (click)="toggleRarity(r.id)"
+            >
+              {{ r.name }}
+            </button>
+          }
+        </div>
+      </section>
+
+      <section class="group">
+        <h3 class="group-title">Тип предмета</h3>
+        <div class="chips">
+          @for (t of svc.allTypes(); track t.id) {
+            <button
+              class="chip"
+              [class.active]="isTypeActive(t.id)"
+              (click)="toggleType(t.id)"
+            >
+              {{ t.name }}
+            </button>
+          }
+        </div>
+      </section>
+
+      <section class="group">
+        <h3 class="group-title">Стоимость (зм.)</h3>
+        <div class="price-row">
+          <div class="price-field">
+            <label>От</label>
+            <input
+              type="number"
+              placeholder="0"
+              min="0"
+              [ngModel]="f.costMin"
+              (ngModelChange)="set('costMin', $event || null)"
+            />
+          </div>
+          <div class="price-field">
+            <label>До</label>
+            <input
+              type="number"
+              placeholder="∞"
+              min="0"
+              [ngModel]="f.costMax"
+              (ngModelChange)="set('costMax', $event || null)"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="group">
+        <h3 class="group-title">Требует настройки</h3>
+        <div class="chips">
+          <button
+            class="chip"
+            [class.active]="f.hasAttunement === true"
+            (click)="setAttunement(f.hasAttunement === true ? null : true)"
+          >
+            Да
+          </button>
+          <button
+            class="chip"
+            [class.active]="f.hasAttunement === false"
+            (click)="setAttunement(f.hasAttunement === false ? null : false)"
+          >
+            Нет
+          </button>
+        </div>
+      </section>
+      <section class="group" *ngIf="f.hasAttunement">
+        <h3 class="group-title">Требует кем</h3>
+        <div class="chips">
+          @for (a of svc.filteredAttunements(); track $index) {
+            <button
+              class="chip"
+              [class.active]="isAttunementActive(a)"
+              (click)="toggleAttunement(a)"
+            >
+              {{ a }}
+            </button>
+          }
+          <button
+            class="chip show-more"
+            *ngIf="!svc.showMoreAttunements()"
+            (click)="svc.showMoreAttunements.set(true)"
+          >
+            Показать больше...
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div class="modal-footer">
+      <span class="hint">Фильтры применяются автоматически</span>
+      <button class="btn-reset" (click)="reset()">Сбросить всё</button>
+    </div>
+  </div>
+</div>

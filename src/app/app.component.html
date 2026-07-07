@@ -1,0 +1,29 @@
+<div class="app-shell">
+  <header class="app-header">
+    <h1>Магические предметы D&D 5e</h1>
+    <div class="header-right">
+      <app-mode-switch />
+      <button class="filter-btn" (click)="filtersOpen = true">
+        ⚗ Фильтр
+        @if (svc.activeFilterCount() > 0) {
+          <span class="filter-badge">{{ svc.activeFilterCount() }}</span>
+        }
+      </button>
+    </div>
+  </header>
+
+  @if (buy.active()) {
+    <app-buy-panel />
+    <app-cart (open)="openItem($event)" />
+  }
+
+  <app-item-list (open)="openItem($event)" />
+</div>
+
+@if (filtersOpen) {
+  <app-filters (closeModal)="filtersOpen = false" />
+}
+
+@if (selected) {
+  <app-item-modal [item]="selected" (close)="closeModal()" />
+}

@@ -1,0 +1,69 @@
+<div class="buy-panel">
+  <div class="row top-row">
+    <div class="field budget-field">
+      <label class="section-label">Бюджет закупа (зм.)</label>
+      <input
+        type="number"
+        min="0"
+        step="50"
+        [ngModel]="budgetStr"
+        (ngModelChange)="budgetStr = $event"
+      />
+    </div>
+
+    <div class="field">
+      <label class="section-label">Режим оценки цены</label>
+      <div class="price-mode-toggle">
+        <button
+          [class.active]="buy.priceMode() === 'exact'"
+          (click)="setPriceMode('exact')"
+        >
+          Точная (среднее)
+        </button>
+        <button
+          [class.active]="buy.priceMode() === 'rangeByMin'"
+          (click)="setPriceMode('rangeByMin')"
+        >
+          Точная (минимум)
+        </button>
+        <button
+          [class.active]="buy.priceMode() === 'rangeByMax'"
+          (click)="setPriceMode('rangeByMax')"
+        >
+          Точная (максимум)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="budget-bar-wrap">
+    <div class="budget-bar">
+      <div
+        class="budget-bar-fill"
+        [class.over]="isOverBudget"
+        [style.width.%]="remainingPercent"
+      ></div>
+    </div>
+    <div class="budget-numbers">
+      <span class="spent"
+        >Потрачено:
+        <strong>{{ buy.spent() | number: "1.0-0" }}</strong> зм.</span
+      >
+      <span class="remaining" [class.over]="isOverBudget">
+        Остаток: <strong>{{ buy.remaining() | number: "1.0-0" }}</strong> зм.
+      </span>
+    </div>
+  </div>
+
+  <p class="mode-hint">
+    @if (buy.priceMode() === "exact") {
+      Доступность считается по среднему значению price.dmg/xge (или середине
+      диапазона стоимости), если оно не превышает остаток бюджета.
+    } @else if (buy.priceMode() === "rangeByMin") {
+      Доступность считается по минимальной границе диапазона стоимости предмета
+      — предмет может стоить дороже остатка, но потенциально по карману.
+    } @else {
+      Доступность считается по максимальной границе диапазона стоимости предмета
+    }
+  </p>
+</div>

@@ -1,0 +1,53 @@
+<div class="cart">
+  <div class="cart-header">
+    <span class="cart-title">
+      Корзина закупа
+      @if (buy.cartCount() > 0) {
+        <span class="count">({{ buy.cartCount() }})</span>
+      }
+    </span>
+    @if (buy.cart().length > 0) {
+      <div class="header-actions">
+        <button class="btn-export" (click)="exportCsv()">Экспорт CSV</button>
+        <button class="btn-clear" (click)="buy.clearCart()">Очистить</button>
+      </div>
+    }
+  </div>
+
+  @if (buy.cart().length === 0) {
+    <p class="empty-cart">Пока пусто. Добавляйте предметы из списка ниже.</p>
+  } @else {
+    <div class="cart-list">
+      @for (entry of buy.cart(); track entry.item) {
+        <div class="cart-row">
+          <div class="cart-row-info" (click)="open.emit(entry.item)">
+            <div class="cart-row-name">{{ entry.item.name }}</div>
+            <div class="cart-row-meta">
+              {{ entry.item.itemType?.name }} · {{ entry.item.rarity?.name }}
+            </div>
+          </div>
+          <div class="cart-row-qty">
+            <button (click)="buy.changeQty(entry.item, -1)">−</button>
+            <span>{{ entry.qty }}</span>
+            <button (click)="buy.changeQty(entry.item, 1)">+</button>
+          </div>
+          <div class="cart-row-price">
+            {{ lineTotal(entry.item, entry.qty) | number: "1.0-0" }} зм.
+          </div>
+          <button
+            class="cart-row-remove"
+            (click)="buy.removeFromCart(entry.item)"
+            aria-label="Удалить"
+          >
+            ×
+          </button>
+        </div>
+      }
+    </div>
+
+    <div class="cart-footer">
+      <span>Итого:</span>
+      <strong>{{ buy.spent() | number: "1.0-0" }} зм.</strong>
+    </div>
+  }
+</div>

@@ -1,0 +1,55 @@
+.switch {
+  display: inline-flex;
+  background: var(--color-surface-2);
+  border: 0.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 3px;
+  margin-bottom: 1rem;
+  gap: 2px;
+}
+
+.switch-btn {
+  position: relative;
+  padding: 7px 16px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: background .2s ease, color .2s ease, transform .1s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+
+  &.active {
+    background: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+
+  &:active { transform: scale(0.97); }
+}
+
+.cart-pill {
+  background: var(--color-accent);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 1px 6px;
+  min-width: 18px;
+  text-align: center;
+  animation: pulseOnce .3s ease;
+}
+
+@media (max-width: 480px) {
+  .switch {
+    width: 100%;
+  }
+  .switch-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 10px;
+    font-size: 12.5px;
+  }
+}
